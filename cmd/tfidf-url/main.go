@@ -9,8 +9,7 @@ import (
   "github.com/igorariza/tfidf/utils"
 )
 
-// readLines reads a whole file into memory
-// and returns a slice of its lines.
+// readLines reads a whole file into memory and returns a slice of its lines.
 func readLines(path string) (*map[string]uint, error) {
   file, err := os.Open(path)
   if err != nil {
@@ -20,7 +19,7 @@ func readLines(path string) (*map[string]uint, error) {
 
   dict := make(map[string]uint)
   var lines []string
-  
+  //scanner for reading the file
   scanner := bufio.NewScanner(file)
 
   for scanner.Scan() {
@@ -41,9 +40,8 @@ func readLines(path string) (*map[string]uint, error) {
   return &dict, scanner.Err()
 }
 
-
-
 func main() {
+  //query string to be searched
   queryString := "Neutron"
   
   fmt.Println(utils.SearchURLPrefix)

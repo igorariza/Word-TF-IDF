@@ -9,11 +9,8 @@ import (
 	"github.com/igorariza/tfidf/utils"
 )
 
-// Returns a map where the key is a word and the int is the number
-// of times that word appears in the set of documents
-//
-// Providing a threshold (1.0 >= x > 0.0) will return only the words
-// that appear in all the documents (x*100)% of the time
+// Returns a map of words and their respective term frequency in the document
+// where the document is specified by the index of the record in the recordArray
 func termFrequency(recordArray [][]string, threshold float64) (m map[string]int, err error) {
 	saveMap := make(map[string]map[string]int)
 	for _, record := range recordArray {
@@ -62,8 +59,8 @@ func termFrequency(recordArray [][]string, threshold float64) (m map[string]int,
 	}
 	return documentFrequencyMap, nil
 }
-
 // Inverse Document Frequency
+// returns a map of words and their respective inverse document frequency
 func inverseDocumentFrequency(recordArray [][]string) (m map[string]float64, err error) {
 	d := float64(len(recordArray))
 
@@ -103,7 +100,8 @@ func inverseDocumentFrequency(recordArray [][]string) (m map[string]float64, err
 	return idfMap, nil
 }
 
-// Term Frequency-Inverse Document Frequency (TF-IDF)
+// Term Frequency-Inverse Document Frequency (TF-IDF) is a statistical measure of the importance of a word in a document.
+// how important a word is to a document in a collection or corpus. It is
 func termFrequencyInverseDocumentFrequency(fileName string) (m map[string]float64, err error) {
 	recordArray, err := utils.ReadRecords(fileName)
 	if err != nil {
@@ -135,7 +133,6 @@ func main() {
 		fmt.Println("Please provide a word to search")
 		return
 	}
-
 	tfidfMap, err := termFrequencyInverseDocumentFrequency("data/document_1.txt")
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -148,6 +145,7 @@ func main() {
 				fmt.Println("the TF-IDF weight of the word ", k, " in the document is ", "->", v)
 			}
 		}
+		//If the word is not found in the document
 		if !ok {
 			fmt.Println("the word it is not in the document")
 		}
