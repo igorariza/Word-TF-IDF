@@ -59,6 +59,7 @@ func termFrequency(recordArray [][]string, threshold float64) (m map[string]int,
 	}
 	return documentFrequencyMap, nil
 }
+
 // Inverse Document Frequency
 // returns a map of words and their respective inverse document frequency
 func inverseDocumentFrequency(recordArray [][]string) (m map[string]float64, err error) {
@@ -129,20 +130,24 @@ func termFrequencyInverseDocumentFrequency(fileName string) (m map[string]float6
 func main() {
 	word := flag.String("word", "", "Word to search")
 	flag.Parse()
-	if word == nil || *word == "" {
-		fmt.Println("Please provide a word to search")
-		return
-	}
 	tfidfMap, err := termFrequencyInverseDocumentFrequency("data/document_1.txt")
 	if err != nil {
 		fmt.Println("Error:", err)
 	} else {
 		ok := false
-		for k, v := range tfidfMap {
-			fq := fmt.Sprintf(*word)
-			if strings.ToLower(fq) == k {
+		if word == nil || *word == "" {
+			for k, v := range tfidfMap {
 				ok = true
 				fmt.Println("the TF-IDF weight of the word ", k, " in the document is ", "->", v)
+			}
+
+		} else {
+			for k, v := range tfidfMap {
+				fq := fmt.Sprintf(*word)
+				if strings.ToLower(fq) == k {
+					ok = true
+					fmt.Println("the TF-IDF weight of the word ", k, " in the document is ", "->", v)
+				}
 			}
 		}
 		//If the word is not found in the document
